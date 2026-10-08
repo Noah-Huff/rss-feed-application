@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { LoginUser, User, RegisterUser } from "../models/types";
+import type { LoginUser, User, RegisterUser } from "../models/userModel";
 
 export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
 

@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useState, type SubmitEvent } from "react";
 import { ApiError } from "../models/errors";
 import { FormField } from "../components/FormField";
-import type { RegisterUser } from "../models/types";
+import type { RegisterUser } from "../models/userModel";
 
 type FieldName = 'firstName' | 'lastName' | 'email' | 'password';
 type FieldErrors = Partial<Record<FieldName, string>>;

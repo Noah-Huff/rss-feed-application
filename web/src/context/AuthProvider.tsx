@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import * as authApi from '../api/auth';
-import type { LoginUser, RegisterUser, User } from '../models/types';
+import type { LoginUser, RegisterUser, User } from '../models/userModel';
 import { clearToken, getToken, setToken } from '../api/tokenStorage';
 import { type AuthStatus, AuthContext } from './AuthContext';
 import { ApiError } from '../models/errors';

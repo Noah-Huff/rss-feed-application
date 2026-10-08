@@ -1,6 +1,6 @@
-import { InvalidCredentialsError } from '../errors.js';
+import { InvalidCredentialsError, UnauthorizedError } from '../errors.js';
 import argon2 from 'argon2';
-import { createUser, findByEmail, type PublicUser, type User } from '../db/userRepo.js';
+import { createUser, findByEmail, findById, type PublicUser, type User } from '../db/repos/userRepo.js';
 
 const DUMMY_HASH = await argon2.hash('dummy-pwd-for-timing');
 
@@ -40,6 +40,12 @@ export async function login(email: string, password: string): Promise<PublicUser
     if (!valid) throw new InvalidCredentialsError();
 
     return toPublicUser(user);
+}
+
+export async function getCurrentUser(userId: string): Promise<PublicUser> {
+    const user = await findById(userId);
+    if (!user) throw new UnauthorizedError('unauthorized');
+    return user;
 }
 
 function normalizeEmail(email: string): string {

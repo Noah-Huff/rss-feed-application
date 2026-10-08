@@ -1,0 +1,1 @@
+ALTER TABLE "feed_items" RENAME COLUMN "create_ag" TO "created_at";

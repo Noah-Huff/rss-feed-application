@@ -1,5 +1,5 @@
 import { request } from './client';
-import type { LoginUser, LoginResponse, RegisterUser, User } from '../models/types';
+import type { LoginUser, LoginResponse, RegisterUser, User } from '../models/userModel';
 
 export function login(loginUser: LoginUser): Promise<LoginResponse> {
     return request<LoginResponse>('/auth/login', { method: 'POST', body: loginUser });

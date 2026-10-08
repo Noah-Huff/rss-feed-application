@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { EmailAlreadyInUseError } from "../errors.js";
-import { db } from "./index.js";
-import { usersTable } from "./schema.js";
+import { EmailAlreadyInUseError } from "../../errors.js";
+import { db } from "../index.js";
+import { usersTable } from "../schema.js";
 
 export type User = typeof usersTable.$inferSelect;
 export type NewUser = typeof usersTable.$inferInsert;

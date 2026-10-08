@@ -3,6 +3,8 @@ import LoginPage from './pages/LoginPage'
 import DashBoardPage from './pages/DashboardPage'
 import RegisterPage from './pages/RegisterPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import FeedsPage from './pages/FeedsPage'
+import FeedItemsPage from './pages/FeedItemsPage'
 
 export default function App() {
   return (
@@ -16,6 +18,21 @@ export default function App() {
             <DashBoardPage />
           </ProtectedRoute>
         } />
+      <Route
+        path="/feeds"
+        element={
+          <ProtectedRoute>
+            <FeedsPage />
+          </ProtectedRoute>
+        } />
+      <Route
+        path="/feeds/:id"
+        element={
+          <ProtectedRoute>
+            <FeedItemsPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

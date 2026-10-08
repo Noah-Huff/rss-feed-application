@@ -1,6 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { register, login, type RegisterUser } from '../../services/authService.js';
-import { findById } from '../../db/userRepo.js';
+import { register, type RegisterUser } from '../../services/authService.js';
 import {
   registerBodySchema,
   publicUserSchema,

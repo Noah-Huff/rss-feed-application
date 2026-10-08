@@ -8,6 +8,27 @@
       "when": 1791037722088,
       "tag": "0000_shocking_switch",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791324991909,
+      "tag": "0001_sour_santa_claus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791349577362,
+      "tag": "0002_blushing_pretty_boy",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791352461397,
+      "tag": "0003_elite_imperial_guard",
+      "breakpoints": true
     }
   ]
 }

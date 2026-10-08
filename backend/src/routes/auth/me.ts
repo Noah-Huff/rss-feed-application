@@ -1,9 +1,9 @@
 import type { FastifyInstance } from 'fastify';
-import { findById } from '../../db/userRepo.js';
 import {
   publicUserSchema,
   errorSchema,
 } from '../../schemas/auth.js';
+import { getCurrentUser } from '../../services/authService.js';
 
 export default async function (fastify: FastifyInstance) {
   fastify.get(
@@ -14,7 +14,7 @@ export default async function (fastify: FastifyInstance) {
       config: { rateLimit: { max: 5, timeWindow: '1 minute' } }
     },
     async (request, reply) => {
-        const user = await findById(request.user.sub);
+        const user = await getCurrentUser(request.user.sub);
         if (!user) return reply.code(401).send({ message: 'unauthorized' });
         return user;
     },
