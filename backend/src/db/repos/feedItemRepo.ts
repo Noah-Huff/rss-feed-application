@@ -1,6 +1,6 @@
-import { and, asc, desc, eq, gte, ilike, lte, notInArray, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, getTableColumns, gte, ilike, lte, notInArray, or, SQL, sql } from "drizzle-orm";
 import { db } from "../index.js";
-import { feedItemsTable } from "../schema.js";
+import { feedItemsTable, feedsTable, subscriptionsTable } from "../schema.js";
 import type { FeedItem, ItemFilters } from "../../types/feed.js";
 
 export type StoredFeedItem = typeof feedItemsTable.$inferSelect;
@@ -37,6 +37,20 @@ export async function pruneItems(feedId: string, keep: number): Promise<void> {
         );
 }
 
+function buildConditions(f: ItemFilters): SQL[] {
+    const conditions: SQL[] = [];
+    if (f.query) {
+        const pattern = `%${f.query}%`;
+        conditions.push(or(
+            ilike(feedItemsTable.title, pattern),
+            ilike(feedItemsTable.description, pattern),
+        )!);
+    }
+    if (f.from) conditions.push(gte(feedItemsTable.publishedAt, f.from));
+    if (f.to) conditions.push(lte(feedItemsTable.publishedAt, f.to));
+    return conditions;
+}
+
 const SORT_COLUMNS = {
     publishedAt: feedItemsTable.publishedAt,
     title: feedItemsTable.title,
@@ -44,25 +58,13 @@ const SORT_COLUMNS = {
 } as const;
 
 export async function queryItems(feedId: string, filter: ItemFilters): Promise<StoredFeedItem[]> {
-    const conditions = [eq(feedItemsTable.feedId, feedId)];
-
-    if (filter.query) {
-        const pattern = `%${filter.query}%`;
-        conditions.push(or(
-            ilike(feedItemsTable.title, pattern),
-            ilike(feedItemsTable.description, pattern),
-        )!);
-    }
-    if (filter.from) conditions.push(gte(feedItemsTable.publishedAt, filter.from));
-    if (filter.to) conditions.push(lte(feedItemsTable.publishedAt, filter.to));
-
     const column = SORT_COLUMNS[filter.sortBy];
     const direction = filter.order === 'asc' ? sql`asc` : sql`desc`;
 
     const items = await db
         .select()
         .from(feedItemsTable)
-        .where(and(...conditions))
+        .where(and(eq(feedItemsTable.feedId, feedId), ...buildConditions(filter)))
         .orderBy(
             sql`${column} ${direction} nulls last`,
             desc(feedItemsTable.createdAt),
@@ -70,6 +72,23 @@ export async function queryItems(feedId: string, filter: ItemFilters): Promise<S
         )
         .limit(filter.limit)
         .offset(filter.offset);
+
+    return items;
+}
+
+export async function queryItemsForUser(userId: string, f: ItemFilters) {
+    const items = await db
+        .select({ ...getTableColumns(feedItemsTable), feedTitle: feedsTable.title })
+        .from(feedItemsTable)
+        .innerJoin(subscriptionsTable, eq(subscriptionsTable.feedId, feedItemsTable.feedId))
+        .innerJoin(feedsTable, eq(feedsTable.id, feedItemsTable.feedId))
+        .where(and(eq(subscriptionsTable.userId, userId), ...buildConditions(f)))
+        .orderBy(
+            sql`${feedItemsTable.publishedAt} desc nulls last`,
+            desc(feedItemsTable.createdAt),
+        )
+        .limit(f.limit)
+        .offset(f.offset);
 
     return items;
 }

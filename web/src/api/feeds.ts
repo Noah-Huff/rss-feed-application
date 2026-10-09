@@ -18,6 +18,25 @@ export interface GetItemsParams {
   order?: SortOrder;
 }
 
+function toQueryString(params: GetItemsParams): string {
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== '') {
+      search.set(key, String(value));
+    }
+  }
+  const qs = search.toString();
+  return qs ? `?${qs}` : '';
+}
+
+export function getItems(feedId: string, params: GetItemsParams = {}): Promise<FeedItem[]> {
+  return request<FeedItem[]>(`/feeds/${feedId}/items${toQueryString(params)}`);
+}
+
+export function getAllItems(params: GetItemsParams = {}): Promise<FeedItem[]> {
+  return request<FeedItem[]>(`/feeds/all${toQueryString(params)}`);
+}
+
 export function getFeeds(): Promise<Feed[]> {
   return request<Feed[]>('/feeds');
 }
@@ -28,15 +47,4 @@ export function addFeed(url: string): Promise<Feed> {
 
 export function deleteFeed(id: string): Promise<void> {
   return request<void>(`/feeds/${id}`, { method: 'DELETE' });
-}
-
-export function getItems(feedId: string, params: GetItemsParams = {}): Promise<FeedItem[]> {
-  const search = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (value !== undefined && value !== '') {
-      search.set(key, String(value));
-    }
-  }
-  const qs = search.toString();
-  return request<FeedItem[]>(`/feeds/${feedId}/items${qs ? `?${qs}` : ''}`);
 }

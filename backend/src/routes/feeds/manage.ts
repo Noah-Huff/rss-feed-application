@@ -10,7 +10,7 @@ import {
   type FeedIdParams,
   type ItemsQuery,
 } from '../../schemas/feed.js';
-import { listItems } from '../../services/listItemsService.js';
+import { listAllItems, listItems } from '../../services/listItemsService.js';
 
 export default async function (fastify: FastifyInstance) {
   fastify.post<{ Body: AddFeedBody }>(
@@ -69,6 +69,29 @@ export default async function (fastify: FastifyInstance) {
         offset,
         sortBy,
         order,
+      });
+    },
+  );
+
+  fastify.get<{ Querystring: ItemsQuery }>(
+    '/all',
+    {
+      preHandler: fastify.authenticate,
+      schema: {
+        querystring: itemsQuerySchema,
+        response: { 200: { type: 'array', items: feedItemSchema } },
+      },
+    },
+    async (request) => {
+      const { query, from, to, sortBy, order, limit, offset } = request.query;
+      return listAllItems(request.user.sub, {
+        query,
+        from: from ? new Date(from) : undefined,
+        to: to ? new Date(to) : undefined,
+        sortBy,
+        order,
+        limit,
+        offset,
       });
     },
   );
