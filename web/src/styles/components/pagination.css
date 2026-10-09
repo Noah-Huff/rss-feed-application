@@ -1,0 +1,10 @@
+.pagination {
+    color: var(--parchment);
+
+    span {
+        margin: 0 10px 0 10px;
+    }
+    button {
+        margin: 10px 20px 10px 20px;
+    }
+}

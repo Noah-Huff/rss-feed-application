@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 import { getItems, type GetItemsParams } from '../api/feeds';
 import { ApiError } from '../models/errors';
-import type { FeedItem } from '../models/feedModel'; 
+import type { FeedItem, ItemSortBy, SortOrder } from '../models/feedModel';
 
-const PAGE_SIZE = import.meta.env.VITE_FEED_PAGE_SIZE | 20;
+const PAGE_SIZE = Number(import.meta.env.VITE_FEED_PAGE_SIZE) || 20;
 
 export interface ItemFilterValues {
   query: string;
-  from: string; 
+  from: string;
   to: string;
+  sortBy: ItemSortBy;
+  order: SortOrder;
 }
 
-export const emptyFilters: ItemFilterValues = { query: '', from: '', to: '' };
+export const emptyFilters: ItemFilterValues = {
+  query: '', from: '', to: '', sortBy: 'publishedAt', order: 'desc',
+};
 
 function toIso(date: string, endOfDay: boolean): string {
   if (!date) return '';
@@ -19,80 +23,59 @@ function toIso(date: string, endOfDay: boolean): string {
   return new Date(`${date}${time}`).toISOString();
 }
 
-function buildParams(filters: ItemFilterValues, offset: number): GetItemsParams {
+function buildParams(filters: ItemFilterValues, page: number): GetItemsParams {
   return {
     query: filters.query,
     from: toIso(filters.from, false),
     to: toIso(filters.to, true),
-    limit: PAGE_SIZE,
-    offset,
+    sortBy: filters.sortBy,
+    order: filters.order,
+    limit: PAGE_SIZE + 1,               // one extra, to detect a next page
+    offset: (page - 1) * PAGE_SIZE,
   };
-}
-
-function messageFrom(err: unknown): string {
-  return err instanceof ApiError ? err.message : 'Something went wrong.';
 }
 
 interface Result {
   key: string;
   items: FeedItem[];
+  hasNext: boolean;
   error: string | null;
-  moreError: string | null;
-  done: boolean;
 }
 
-export function useFeedItems(feedId: string, filters: ItemFilterValues) {
-  const { query, from, to } = filters;
-  const key = JSON.stringify([feedId, query, from, to]);
+export function useFeedItems(feedId: string, filters: ItemFilterValues, page: number) {
+  const { query, from, to, sortBy, order } = filters;
+  const key = JSON.stringify([feedId, query, from, to, sortBy, order, page]);
   const [result, setResult] = useState<Result | null>(null);
-  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    getItems(feedId, buildParams({ query, from, to }, 0))
-      .then((items) => {
+    getItems(feedId, buildParams({ query, from, to, sortBy, order }, page))
+      .then((data) => {
         if (!cancelled) {
-          setResult({ key, items, error: null, moreError: null, done: items.length < PAGE_SIZE });
+          setResult({
+            key,
+            items: data.slice(0, PAGE_SIZE),
+            hasNext: data.length > PAGE_SIZE,
+            error: null,
+          });
         }
       })
       .catch((err) => {
         if (!cancelled) {
-          setResult({ key, items: [], error: messageFrom(err), moreError: null, done: true });
+          const error = err instanceof ApiError ? err.message : 'Something went wrong.';
+          setResult({ key, items: [], hasNext: false, error });
         }
       });
     return () => {
       cancelled = true;
     };
-  }, [key, feedId, query, from, to]);
+  }, [key, feedId, query, from, to, sortBy, order, page]);
 
   const current = result?.key === key ? result : null;
-
-  async function loadMore() {
-    if (!current || current.done || loadingMore) return;
-    setLoadingMore(true);
-    try {
-      const next = await getItems(feedId, buildParams(filters, current.items.length));
-      setResult((prev) =>
-        prev && prev.key === key
-          ? { ...prev, items: [...prev.items, ...next], moreError: null, done: next.length < PAGE_SIZE }
-          : prev
-      );
-    } catch (err) {
-      setResult((prev) =>
-        prev && prev.key === key ? { ...prev, moreError: messageFrom(err) } : prev
-      );
-    } finally {
-      setLoadingMore(false);
-    }
-  }
-
   return {
     items: current?.items ?? [],
     error: current?.error ?? null,
-    moreError: current?.moreError ?? null,
+    hasNext: current?.hasNext ?? false,
     loading: current === null,
-    loadingMore,
-    hasMore: current !== null && !current.done,
-    loadMore,
   };
 }

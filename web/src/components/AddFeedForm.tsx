@@ -30,15 +30,17 @@ export function AddFeedForm({ onAdded }: AddFeedFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormField
-        label="Feed URL"
-        name="url"
-        type="url"
-        value={url}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)}
-        error={error}
-        autoComplete="url"
-      />
+      <div id="add-feed">
+        <FormField
+          label="Enter Feed URL"
+          name="url"
+          type="url"
+          value={url}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)}
+          error={error}
+          autoComplete="url"
+        />
+      </div>
       <button type="submit" disabled={submitting || !url.trim()}>
         {submitting ? 'Adding...' : 'Add feed'}
       </button>

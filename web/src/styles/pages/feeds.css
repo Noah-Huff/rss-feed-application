@@ -1,0 +1,33 @@
+.feeds {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    flex-direction: column;
+    gap: 3vh;
+
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-4);
+        padding: var(--space-3) var(--space-4);
+        border: 5px solid; 
+        border-radius: 80px;
+        border-color: var(--graphite);
+        margin-top: 5px;
+        background-color: var(--thistle);
+    }
+
+    button {
+        background-color: var(--sandy-brown);
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--peach-glow);
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}

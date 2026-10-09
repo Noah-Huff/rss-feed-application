@@ -1,0 +1,16 @@
+.item-card {
+    display: flex;
+    align-items: center;
+    width: 92%;
+    flex-direction: column;
+    gap: 3vh;
+    background-color: var(--thistle);
+    padding: 20px 20px 20px 20px;
+    border-radius: 80px;
+    border: 10px solid;
+    border-color: var(--graphite);
+
+    img {
+        border-radius: 60px;
+    }
+}

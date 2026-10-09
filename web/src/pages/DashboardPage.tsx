@@ -1,11 +1,16 @@
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router-dom";
+import "../styles/pages/dashboard.css";
 
 export default function DashBoardPage() {
     const { user, logout } = useAuth();
-    return <div>
-        <h1>Welcome, {user?.firstName}!</h1>
+    return <div className="dashboard">
+        <h1>Welcome, {user?.firstName} {user?.lastName}!</h1>
+        <div>
         <button onClick={logout}>Log out</button>
-        <Link to="/feeds">My feeds</Link>
+        </div>
+        <div className="explore-feeds">
+            <Link to="/feeds">Explore My Feeds</Link>
+        </div>
     </div>
 }

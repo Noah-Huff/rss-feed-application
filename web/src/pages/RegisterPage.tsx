@@ -4,6 +4,7 @@ import { useState, type SubmitEvent } from "react";
 import { ApiError } from "../models/errors";
 import { FormField } from "../components/FormField";
 import type { RegisterUser } from "../models/userModel";
+import "../styles/pages/login-register.css"
 
 type FieldName = 'firstName' | 'lastName' | 'email' | 'password';
 type FieldErrors = Partial<Record<FieldName, string>>;
@@ -77,49 +78,59 @@ export default function RegisterPage() {
             setSubmitting(false);
         }
     }
-    
+
     if (status === 'authenticated') return <Navigate to="/" replace />
 
-    return <form onSubmit={handleSubmit} noValidate>
+    return <form onSubmit={handleSubmit} noValidate className="login-register">
         <h1>Register here</h1>
-        <FormField
-            label="First Name"
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            error={fieldErrors.firstName}
-        />
+        <div>
+            <FormField
+                label="First Name"
+                name="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                error={fieldErrors.firstName}
+            />
+        </div>
 
-        <FormField
-            label="Last Name"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            error={fieldErrors.lastName}
-        />
+        <div>
+            <FormField
+                label="Last Name"
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                error={fieldErrors.lastName}
+            />
+        </div>
 
-        <FormField
-            label="Email"
-            name="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-            error={fieldErrors.email}
-        />
+        <div>
+            <FormField
+                label="Email"
+                name="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                error={fieldErrors.email}
+            />
+        </div>
 
-        <FormField
-            label="Password"
-            name="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="new-password"
-            error={fieldErrors.password}
-        />
+        <div>
+            <FormField
+                label="Password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="new-password"
+                error={fieldErrors.password}
+            />
+        </div>
 
         {formError && <p role="alert">{formError}</p>}
         <button type="submit" disabled={submitting}>{submitting ? "Registering..." : "Register"}</button>
-        <Link to="/login">Already have an account? Login here</Link>
+        <div>
+            <Link to="/login">Already have an account? Login here</Link>
+        </div>
     </form>
 }

@@ -1,0 +1,23 @@
+.item-filters {
+    margin: 5px;
+
+    button {
+        margin: 10px;
+    }
+
+    select {
+        appearance: none;
+        margin: 10px;
+        padding: 15px;
+        border-radius: var(--radius);
+        background-color: var(--parchment);
+
+        option {
+            color: aqua;
+            appearance: none;
+        }
+
+        border: 1px solid;
+        border-color: var(--graphite);
+    }
+}

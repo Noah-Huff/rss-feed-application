@@ -11,7 +11,7 @@ export default async function (fastify: FastifyInstance) {
     {
       preHandler: [fastify.authenticate],
       schema: { response: { 200: publicUserSchema, 401: errorSchema } },
-      config: { rateLimit: { max: 5, timeWindow: '1 minute' } }
+      config: { rateLimit: { max: 25, timeWindow: '1 minute' } }
     },
     async (request, reply) => {
         const user = await getCurrentUser(request.user.sub);

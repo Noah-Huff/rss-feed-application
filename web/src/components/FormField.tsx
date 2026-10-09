@@ -19,7 +19,7 @@ export function FormField({
     error,
     autoComplete
 }: FormFieldProps) {
-    return <div>
+    return <div className="form-field">
         <label htmlFor={name}>{label}</label>
         <input
             id={name}

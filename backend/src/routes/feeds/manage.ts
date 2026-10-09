@@ -60,13 +60,15 @@ export default async function (fastify: FastifyInstance) {
       },
     },
     async (request) => {
-      const { query, from, to, limit, offset } = request.query;
+      const { query, from, to, limit, offset, sortBy, order } = request.query;
       return listItems(request.user.sub, request.params.id, {
         query,
         from: from ? new Date(from) : undefined,
         to: to ? new Date(to) : undefined,
         limit,
         offset,
+        sortBy,
+        order,
       });
     },
   );

@@ -17,3 +17,6 @@ export interface FeedItem {
   publishedAt: string | null;
   createdAt: string;
 }
+
+export type ItemSortBy = 'publishedAt' | 'title' | 'description';
+export type SortOrder = 'asc' | 'desc';

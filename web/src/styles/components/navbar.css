@@ -7,7 +7,7 @@ nav {
     border-radius: 80px;
 
     border: 5px solid;
-    border-color: var(--lilac-ash);
+    border-color: var(--thistle);
 
 
     > ul {
@@ -21,13 +21,13 @@ nav {
         display: block;
         padding: 15px;
         text-decoration: none;
-        color: white;
+        color: var(--parchment);
         border-radius: 80px;
         transition: backgroud-color 0.05s ease, color 0.55s ease;
     }
     a:hover,
     a:focus-visible {
-        background-color: white;
-        color: black;
+        background-color: var(--parchment);
+        color: var(--graphite);
     }
 }

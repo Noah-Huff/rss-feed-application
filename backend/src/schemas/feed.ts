@@ -6,12 +6,16 @@ export interface FeedIdParams {
   id: string;
 }
 
+export type ItemSortBy = 'publishedAt' | 'title' | 'description';
+export type SortOrder = 'asc' | 'desc';
 export interface ItemsQuery {
   query?: string;
   from?: string;
   to?: string;
   limit: number;
   offset: number;
+  sortBy: ItemSortBy; 
+  order: SortOrder;
 }
 
 export const addFeedBodySchema = {
@@ -34,6 +38,12 @@ export const itemsQuerySchema = {
     to: { type: 'string', format: 'date-time' },
     limit: { type: 'integer', minimum: 1, maximum: 100, default: 20 },
     offset: { type: 'integer', minimum: 0, default: 0 },
+    sortBy: {
+      type: 'string',
+      enum: ['publishedAt', 'title', 'description'],
+      default: 'publishedAt',
+    },
+    order: { type: 'string', enum: ['asc', 'desc'], default: 'desc' },
   },
 } as const;
 

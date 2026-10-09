@@ -1,3 +1,5 @@
+import type { ItemSortBy, SortOrder } from "../schemas/feed.js";
+
 export interface GetFeed {
     imageUrl: string;
     title: string;
@@ -25,4 +27,6 @@ export interface ItemFilters {
   to?: Date | undefined;
   limit: number;
   offset: number;
+  sortBy: ItemSortBy;
+  order: SortOrder;
 }

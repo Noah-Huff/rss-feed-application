@@ -1,4 +1,4 @@
-import type { Feed, FeedItem } from '../models/feedModel';
+import type { Feed, FeedItem, ItemSortBy, SortOrder } from '../models/feedModel';
 import { request } from './client'; // ← use the actual filename of your client file
 
 export interface GetItemsParams {
@@ -7,6 +7,15 @@ export interface GetItemsParams {
   to?: string;
   limit?: number;
   offset?: number;
+}
+export interface GetItemsParams {
+  query?: string;
+  from?: string;
+  to?: string;
+  limit?: number;
+  offset?: number;
+  sortBy?: ItemSortBy;
+  order?: SortOrder;
 }
 
 export function getFeeds(): Promise<Feed[]> {

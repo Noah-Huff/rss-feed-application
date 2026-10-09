@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { getFeeds, deleteFeed } from '../api/feeds';
 import { AddFeedForm } from '../components/AddFeedForm';
 import { ApiError } from '../models/errors';
-import type { Feed } from '../models/feedModel'; // match your types path
+import type { Feed } from '../models/feedModel';
+import "../styles/pages/feeds.css";
 
 function errorMessage(err: unknown): string {
   return err instanceof ApiError ? err.message : 'Something went wrong.';
@@ -49,7 +50,7 @@ export default function FeedsPage() {
   }
 
   return (
-    <main>
+    <main className="feeds">
       <h1>My feeds</h1>
       <AddFeedForm onAdded={handleAdded} />
 

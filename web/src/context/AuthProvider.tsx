@@ -25,9 +25,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 if (err instanceof ApiError && err.status === 401) {
                     clearToken(); // token was rejected, discard it
                     setUser(null);
+                    setStatus('unauthenticated'); 
+                } else {
+                    // for any other error, don't get rid of the token. ie. so a server down doesn't require a login
+                    setStatus('error');
                 }
-                // for any other error, don't get rid of the token. ie. so a server down doesn't require a login
-                setStatus('unauthenticated'); 
             })
         return () => {
             cancelled = true;

@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { type SubmitEvent, useState } from "react";
 import { ApiError } from "../models/errors";
 import { FormField } from "../components/FormField";
+import "../styles/pages/login-register.css";
 
 export default function LoginPage() {
     const { login, status } = useAuth();
@@ -12,21 +13,21 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [formError, setFormError] = useState('');
     const [submitting, setSubmitting] = useState(false);
-    
+
     async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
         setFormError('');
-        
+
         const values = {
             email: email.trim(),
             password: password
         }
-        
+
         if (!values) {
             setFormError('Please enter your email and password.');
             return;
         }
-        
+
         setSubmitting(true);
         try {
             await login(values);
@@ -43,13 +44,14 @@ export default function LoginPage() {
         } finally {
             setSubmitting(false);
         }
-        
+
     }
-    
+
     if (status === 'authenticated') return <Navigate to="/" replace />
 
-    return <form onSubmit={handleSubmit} noValidate>
+    return <form onSubmit={handleSubmit} noValidate className="login-register">
         <h1>Log in</h1>
+        <div>
         <FormField
             label="Email"
             name="email"
@@ -57,8 +59,10 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
-        />
+            />
+        </div>
 
+        <div>
         <FormField
             label="Password"
             name="password"
@@ -66,10 +70,13 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
-        />
+            />
+        </div>
 
         {formError && <p role="alert">{formError}</p>}
         <button type="submit" disabled={submitting}>{submitting ? "Logging in..." : "Log in"}</button>
-        <Link to="/register">Create an account</Link>
+        <div>
+            <Link to="/register">Create an account</Link>
+        </div>
     </form>
 }

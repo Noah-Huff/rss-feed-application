@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, ilike, lte, notInArray, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, lte, notInArray, or, sql } from "drizzle-orm";
 import { db } from "../index.js";
 import { feedItemsTable } from "../schema.js";
 import type { FeedItem, ItemFilters } from "../../types/feed.js";
@@ -20,22 +20,28 @@ export async function pruneItems(feedId: string, keep: number): Promise<void> {
     const keepers = db
         .select({ id: feedItemsTable.id })
         .from(feedItemsTable)
-        .where(eq(feedItemsTable.id, feedId))
+        .where(eq(feedItemsTable.feedId, feedId))
         .orderBy(
             sql`${feedItemsTable.publishedAt} desc nulls last`,
             desc(feedItemsTable.createdAt)
         )
         .limit(keep);
-    
-    await db 
+
+    await db
         .delete(feedItemsTable)
         .where(
             and(
-                eq(feedItemsTable.id, feedId),
+                eq(feedItemsTable.feedId, feedId),
                 notInArray(feedItemsTable.id, keepers)
             )
         );
-}   
+}
+
+const SORT_COLUMNS = {
+    publishedAt: feedItemsTable.publishedAt,
+    title: feedItemsTable.title,
+    description: feedItemsTable.description,
+} as const;
 
 export async function queryItems(feedId: string, filter: ItemFilters): Promise<StoredFeedItem[]> {
     const conditions = [eq(feedItemsTable.feedId, feedId)];
@@ -50,13 +56,17 @@ export async function queryItems(feedId: string, filter: ItemFilters): Promise<S
     if (filter.from) conditions.push(gte(feedItemsTable.publishedAt, filter.from));
     if (filter.to) conditions.push(lte(feedItemsTable.publishedAt, filter.to));
 
+    const column = SORT_COLUMNS[filter.sortBy];
+    const direction = filter.order === 'asc' ? sql`asc` : sql`desc`;
+
     const items = await db
         .select()
         .from(feedItemsTable)
         .where(and(...conditions))
         .orderBy(
-            sql`${feedItemsTable.publishedAt} desc nulls last`,
+            sql`${column} ${direction} nulls last`,
             desc(feedItemsTable.createdAt),
+            asc(feedItemsTable.id),
         )
         .limit(filter.limit)
         .offset(filter.offset);

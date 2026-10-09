@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import type { LoginUser, User, RegisterUser } from "../models/userModel";
 
-export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
+export type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated' | 'error';
 
 export interface AuthContextValue {
     user: User | null;

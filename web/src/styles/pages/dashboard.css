@@ -1,0 +1,62 @@
+@keyframes scroll-gradient {
+    from {
+        background-position: 0% 0;
+    }
+
+    to {
+        background-position: 200% 0;
+    }
+}
+
+.dashboard {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    gap: 3vh;
+
+    button {
+        background-color: var(--sandy-brown);
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--peach-glow);
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .explore-feeds {
+        display: inline-block;
+        padding: var(--space-3) var(--space-6);
+        color: var(--graphite);
+        text-decoration: none;
+        border-radius: 80px;
+        background: linear-gradient(90deg,
+                var(--tropical-teal),
+                var(--thistle),
+                var(--sandy-brown),
+                var(--thistle),
+                var(--tropical-teal));
+        background-size: 200% 100%;
+        animation: scroll-gradient 6s linear infinite;
+        transition: filter 0.2s ease;
+
+        &:hover,
+        &:focus-visible {
+            filter: saturate(0.5) brightness(0.95);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .explore-link {
+            animation: none;
+        }
+    }
+}

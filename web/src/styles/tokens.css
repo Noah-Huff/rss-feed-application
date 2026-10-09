@@ -2,16 +2,17 @@
   /* Palette (the trailing "ff" alpha is dropped) */
   --graphite: #363031;
   --tropical-teal: #66b3b7;
-  --harvest-orange: #ec8232;
-  --bone: #eae2d6;
-  --lilac-ash: #baa1b5;
+  --sandy-brown: #F19955;
+  --peach-glow: #F7C6A1;
+  --parchment: #F8F5F2;
+  --thistle: #CBB9C7;
 
   /* Semantic colors: use these in components, not the raw palette */
-  --color-bg: var(--bone);
+  --color-bg: var(--parchment);
   --color-text: var(--graphite);
   --color-primary: var(--tropical-teal);
-  --color-accent: var(--harvest-orange);
-  --color-muted: var(--lilac-ash);
+  --color-accent: var(--sandy-brown);
+  --color-muted: var(--thistle);
   --color-surface: #f6f2eb;   /* my addition: lighter bone for cards */
   --color-error: #b3261e;     /* my addition: the palette has no error color */
 
