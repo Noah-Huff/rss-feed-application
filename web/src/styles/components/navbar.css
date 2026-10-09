@@ -1,4 +1,4 @@
-nav {
+.navbar {
     width: fit-content;
     margin: 1rem auto;
     background: var(--graphite);
@@ -17,16 +17,20 @@ nav {
         display: flex;
     }
 
-    a {
+    a,
+    button {
         display: block;
         padding: 15px;
         text-decoration: none;
         color: var(--parchment);
         border-radius: 80px;
+        background-color: var(--graphite);
         transition: backgroud-color 0.05s ease, color 0.55s ease;
     }
     a:hover,
-    a:focus-visible {
+    a:focus-visible,
+    button:hover,
+    button:focus-visible {
         background-color: var(--parchment);
         color: var(--graphite);
     }
