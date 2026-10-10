@@ -6,11 +6,14 @@ import ProtectedRoute from './components/ProtectedRoute'
 import FeedsPage from './pages/FeedsPage'
 import FeedItemsPage from './pages/FeedItemsPage'
 import NavBar from './components/NavBar'
+import { useAuth } from './hooks/useAuth'
 
 export default function App() {
+  const { status } = useAuth()
+
   return (
     <>
-      <NavBar />
+      {status === 'authenticated' && <NavBar />}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
