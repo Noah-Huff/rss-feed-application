@@ -14,7 +14,7 @@ export interface ItemsQuery {
   to?: string;
   limit: number;
   offset: number;
-  sortBy: ItemSortBy; 
+  sortBy: ItemSortBy;
   order: SortOrder;
 }
 

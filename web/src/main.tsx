@@ -6,12 +6,10 @@ import { AuthProvider } from './context/AuthProvider.tsx';
 import '../src/styles/global.css';
 import '../src/styles/reset.css';
 import '../src/styles/tokens.css';
-import NavBar from './components/NavBar.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-    <NavBar/>
       <AuthProvider>
         <App />
       </AuthProvider>

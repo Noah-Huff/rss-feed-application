@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Three overlapping circles</title>
+  <circle cx="20" cy="32" r="14" fill="#66b3b7"/>
+  <circle cx="32" cy="32" r="14" fill="#F19955"/>
+  <circle cx="44" cy="32" r="14" fill="#CBB9C7"/>
+</svg>

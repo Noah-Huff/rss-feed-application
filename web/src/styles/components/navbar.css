@@ -1,33 +1,135 @@
-nav {
-    width: fit-content;
-    margin: 1rem auto;
-    background: var(--graphite);
+.nav-sentinel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 80px;            /* how far you scroll before it collapses */
+    pointer-events: none;
+}
 
+.nav {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
     padding: 4px;
+    background: var(--graphite);
+    border: 5px solid var(--thistle);
     border-radius: 80px;
+    transition: transform 0.4s ease;
+}
 
-    border: 5px solid;
-    border-color: var(--thistle);
+.nav--collapsed {
+    transform: translateX(calc(1rem - 50vw)); 
+}
 
+/* The three overlapping circles */
+.nav-toggle {
+    position: relative;
+    width: 0;
+    height: 44px;
+    padding: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: none;
+    border: none;
+    transition: width 0.3s ease 0.4s, opacity 0.3s ease 0.2s;
+}
 
-    > ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        display: flex;
-    }
+.nav .nav-toggle:hover {
+    background: none;
+}
 
-    a {
-        display: block;
-        padding: 15px;
-        text-decoration: none;
-        color: var(--parchment);
-        border-radius: 80px;
-        transition: backgroud-color 0.05s ease, color 0.55s ease;
-    }
-    a:hover,
-    a:focus-visible {
-        background-color: var(--parchment);
-        color: var(--graphite);
+.nav--collapsed .nav-toggle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.2s;
+    transition: width 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-toggle span {
+    position: absolute;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+.nav-toggle span:nth-child(1) { left: 8px;  background: var(--tropical-teal); }
+.nav-toggle span:nth-child(2) { left: 17px; background: var(--sandy-brown); }
+.nav-toggle span:nth-child(3) { left: 26px; background: var(--thistle); }
+
+/* Expanding menu: animate width from 0 to its natural size */
+.nav-menu-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    transition: grid-template-columns 0.35s ease 0.4s;
+}
+
+.nav--collapsed .nav-menu-wrap {
+    grid-template-columns: 0fr;
+    transition-delay: 0s;
+}
+
+.nav--collapsed.nav--open .nav-menu-wrap {
+    grid-template-columns: 1fr;
+}
+
+.nav-menu {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    overflow: hidden;
+    list-style: none;
+    white-space: nowrap;
+    visibility: visible;
+    transition: visibility 0s;
+}
+
+/* Hidden items must not be reachable by keyboard */
+.nav--collapsed:not(.nav--open) .nav-menu {
+    visibility: hidden;
+    transition: visibility 0s 0.35s;
+}
+
+/* Links and Log Out share one look */
+.nav-menu a,
+.nav-menu button {
+    display: block;
+    padding: 15px;
+    font: inherit;
+    color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
+    border-radius: 80px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus-visible,
+.nav-menu button:hover,
+.nav-menu button:focus-visible {
+    background-color: var(--tropical-teal);
+    color: var(--graphite);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav,
+    .nav-toggle,
+    .nav-toggle span,
+    .nav-menu-wrap {
+        transition: none;
     }
 }

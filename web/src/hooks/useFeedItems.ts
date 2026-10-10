@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getItems, type GetItemsParams } from '../api/feeds';
+import { getAllItems, getItems, type GetItemsParams } from '../api/feeds';
 import { ApiError } from '../models/errors';
 import type { FeedItem, ItemSortBy, SortOrder } from '../models/feedModel';
 
@@ -42,14 +42,16 @@ interface Result {
   error: string | null;
 }
 
-export function useFeedItems(feedId: string, filters: ItemFilterValues, page: number) {
+export function useFeedItems(feedId: string | undefined, filters: ItemFilterValues, page: number) {
   const { query, from, to, sortBy, order } = filters;
-  const key = JSON.stringify([feedId, query, from, to, sortBy, order, page]);
+  const key = JSON.stringify([feedId ?? 'all', query, from, to, sortBy, order, page]);
   const [result, setResult] = useState<Result | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    getItems(feedId, buildParams({ query, from, to, sortBy, order }, page))
+    const params = buildParams({ query, from, to, sortBy, order }, page);
+    const request = feedId ? getItems(feedId, params) : getAllItems(params);
+    request
       .then((data) => {
         if (!cancelled) {
           setResult({
