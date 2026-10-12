@@ -1,23 +1,100 @@
 .item-filters {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
     margin: 5px;
+}
 
-    button {
-        margin: 10px;
-    }
+.filter-circle {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    min-height: 48px;
+    border-radius: 24px;
+    /* a circle while collapsed */
+    box-shadow: inset 0 0 0 3px var(--thistle);
+    background-color: var(--graphite);
+    color: var(--parchment);
+    overflow: hidden;
+    transition: width 0.25s ease;
+}
 
-    select {
-        appearance: none;
-        margin: 10px;
-        padding: 15px;
-        border-radius: var(--radius);
-        background-color: var(--parchment);
+.item-filters .filter-circle:hover {
+    background-color: var(--tropical-teal);
+    color: var(--graphite);
+}
 
-        option {
-            color: aqua;
-            appearance: none;
-        }
+.item-filters .filter-circle__icon:hover {
+    background: none;
+}
 
-        border: 1px solid;
-        border-color: var(--graphite);
-    }
+.filter-circle.is-open {
+    width: 260px;
+}
+
+.filter-circle__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 46px;
+    padding: 0;
+    font-size: 1.4rem;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.filter-circle__icon svg {
+    display: block;
+}
+
+.filter-input {
+    width: calc(100% - 24px);
+    margin: 0 12px 12px;
+    padding: 10px;
+    border: 1px solid var(--graphite);
+    border-radius: var(--radius);
+    background: var(--parchment);
+    color: var(--graphite);
+}
+
+.filter-options {
+    list-style: none;
+    margin: 0;
+    padding: 0 8px 8px;
+    width: 100%;
+}
+
+.filter-options button {
+    width: 100%;
+    padding: 10px 12px;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: var(--radius);
+    color: var(--graphite);
+    cursor: pointer;
+}
+
+#options button:hover {
+    background-color: var(--thistle);
+}
+
+#options li {
+    background-color: var(--parchment);
+}
+
+.filter-options button.is-selected {
+    background-color: var(--thistle);
+    color: var(--graphite);
+}
+
+.item-filters .filter-circle.is-open,
+.item-filters .filter-circle.is-open:hover {
+    background-color: var(--tropical-teal);
 }
