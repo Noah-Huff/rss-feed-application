@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, type SubmitEvent } from 'react';
 import { emptyFilters, type ItemFilterValues } from '../hooks/useFeedItems';
 import type { ItemSortBy, SortOrder } from '../models/feedModel';
 import OrderIcon from "../assets/OrderIcon"
 import SearchIcon from '../assets/SearchIcon';
 import FilterIcon from '../assets/FilterIcon';
 import "../styles/components/item-filters.css";
+import CloseIcon from '../assets/CloseIcon';
 
 interface ItemFiltersProps {
   onApply: (filters: ItemFilterValues) => void;
@@ -52,22 +53,29 @@ function OptionList<T extends string>({ options, value, onPick }: OptionListProp
 export function ItemFilters({ onApply }: ItemFiltersProps) {
   const [draft, setDraft] = useState<ItemFilterValues>(emptyFilters);
   const [open, setOpen] = useState<Panel | null>(null);
-  const timer = useRef<number | undefined>(undefined);
+  const [searchText, setSearchText] = useState('');
 
-  // Sort/order: apply immediately, then collapse
-  function pick(next: Partial<ItemFilterValues>) {
-    const updated = { ...draft, ...next };
+  function handleSearch(e: SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const updated = { ...draft, query: searchText };
     setDraft(updated);
     onApply(updated);
     setOpen(null);
   }
 
-  // Search: apply 300ms after the user stops typing
-  function changeQuery(query: string) {
-    const updated = { ...draft, query };
+  function handleClearSearch() {
+    setSearchText('');
+    const updated = { ...draft, query: '' };
     setDraft(updated);
-    window.clearTimeout(timer.current);
-    timer.current = window.setTimeout(() => onApply(updated), 300);
+    onApply(updated);
+    setOpen(null);
+  }
+
+  function pick(next: Partial<ItemFilterValues>) {
+    const updated = { ...draft, ...next };
+    setDraft(updated);
+    onApply(updated);
+    setOpen(null);
   }
 
   const show = (p: Panel) => open === null || open === p;
@@ -99,13 +107,26 @@ export function ItemFilters({ onApply }: ItemFiltersProps) {
             <SearchIcon />
           </button>
           {open === 'search' && (
-            <input
-              autoFocus
-              className="filter-input"
-              placeholder="Search"
-              value={draft.query}
-              onChange={(e) => changeQuery(e.target.value)}
-            />
+            <form className="filter-search" onSubmit={handleSearch}>
+              <input
+                autoFocus
+                className="filter-input"
+                placeholder="Search"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              <button type="submit" className="filter-search__submit" aria-label="Run search">
+                <SearchIcon />
+              </button>
+              <button
+                type="button"
+                className="filter-search__clear"
+                aria-label="Clear search"
+                onClick={handleClearSearch}
+              >
+                <CloseIcon />
+              </button>
+            </form>
           )}
         </div>
       )}
