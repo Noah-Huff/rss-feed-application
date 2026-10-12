@@ -15,19 +15,6 @@
     flex-direction: column;
     gap: 3vh;
 
-    button {
-        background-color: var(--sandy-brown);
-    }
-
-    button:hover:not(:disabled) {
-        background: var(--peach-glow);
-    }
-
-    button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
     .explore-feeds {
         display: inline-block;
         padding: var(--space-3) var(--space-6);

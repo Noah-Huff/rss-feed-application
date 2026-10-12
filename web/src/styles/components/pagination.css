@@ -4,7 +4,19 @@
     span {
         margin: 0 10px 0 10px;
     }
+
     button {
         margin: 10px 20px 10px 20px;
+        background-color: var(--sandy-brown);
+
+    }
+
+    button:hover:not(:disabled) {
+        background: var(--peach-glow);
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 }
