@@ -2,8 +2,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 20px;
-    height: 80px;            /* how far you scroll before it collapses */
+    width: 10px;
+    height: 24px;            /* how far you scroll before it collapses */
     pointer-events: none;
 }
 

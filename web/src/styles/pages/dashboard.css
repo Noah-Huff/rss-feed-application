@@ -1,45 +1,14 @@
-@keyframes scroll-gradient {
-    from {
-        background-position: 0% 0;
-    }
-
-    to {
-        background-position: 200% 0;
-    }
-}
-
 .dashboard {
     display: flex;
     align-items: center;
     width: 100%;
     flex-direction: column;
-    gap: 3vh;
+}
 
-    .explore-feeds {
-        display: inline-block;
-        padding: var(--space-3) var(--space-6);
-        color: var(--graphite);
-        text-decoration: none;
-        border-radius: 80px;
-        background: linear-gradient(90deg,
-                var(--tropical-teal),
-                var(--thistle),
-                var(--sandy-brown),
-                var(--thistle),
-                var(--tropical-teal));
-        background-size: 200% 100%;
-        animation: scroll-gradient 6s linear infinite;
-        transition: filter 0.2s ease;
+.dashboard h2 {
+    margin-top: 20px;
+}
 
-        &:hover,
-        &:focus-visible {
-            filter: saturate(0.5) brightness(0.95);
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .explore-link {
-            animation: none;
-        }
-    }
+.dashboard h1 {
+    margin-top: 30px;
 }
