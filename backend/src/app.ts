@@ -22,7 +22,7 @@ export function buildApp(opts: { logger?: boolean } = {}) {
     routeParams: true,
   });
 
-  const webRoot = join(__dirname, '..', '..', 'Web', 'dist');
+  const webRoot = join(__dirname, '..', '..', 'web', 'dist');
 
   // add static hosting for the frontend
   if (existsSync(webRoot)) {
