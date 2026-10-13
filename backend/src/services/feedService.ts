@@ -6,8 +6,6 @@ import { normalizeUrl } from "../utils/feedUrl.js";
 
 const MAX_ITEMS = Number(process.env.FEED_MAX_ITEMS) || 50;
 
-console.log('MAX_ITEMS: ' + MAX_ITEMS);
-
 export const listFeeds = (userId: string) => listFeedsForUser(userId);
 export const unsubscribe = (userId: string, feedId: string) => unsubscribeFromFeed(userId, feedId);
 

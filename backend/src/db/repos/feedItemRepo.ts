@@ -51,6 +51,17 @@ function buildConditions(f: ItemFilters): SQL[] {
     return conditions;
 }
 
+function buildOrderBy(f: ItemFilters) {
+    const column = SORT_COLUMNS[f.sortBy];
+    const direction = f.order === 'asc' ? sql`asc` : sql`desc`;
+
+    return [
+        sql`${column} ${direction} nulls last`,
+        desc(feedItemsTable.createdAt),
+        asc(feedItemsTable.id),
+    ];
+}
+
 const SORT_COLUMNS = {
     publishedAt: feedItemsTable.publishedAt,
     title: feedItemsTable.title,
@@ -65,11 +76,7 @@ export async function queryItems(feedId: string, filter: ItemFilters): Promise<S
         .select()
         .from(feedItemsTable)
         .where(and(eq(feedItemsTable.feedId, feedId), ...buildConditions(filter)))
-        .orderBy(
-            sql`${column} ${direction} nulls last`,
-            desc(feedItemsTable.createdAt),
-            asc(feedItemsTable.id),
-        )
+        .orderBy(...buildOrderBy(filter))
         .limit(filter.limit)
         .offset(filter.offset);
 
@@ -83,10 +90,7 @@ export async function queryItemsForUser(userId: string, f: ItemFilters) {
         .innerJoin(subscriptionsTable, eq(subscriptionsTable.feedId, feedItemsTable.feedId))
         .innerJoin(feedsTable, eq(feedsTable.id, feedItemsTable.feedId))
         .where(and(eq(subscriptionsTable.userId, userId), ...buildConditions(f)))
-        .orderBy(
-            sql`${feedItemsTable.publishedAt} desc nulls last`,
-            desc(feedItemsTable.createdAt),
-        )
+        .orderBy(...buildOrderBy(f)) 
         .limit(f.limit)
         .offset(f.offset);
 
