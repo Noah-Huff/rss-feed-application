@@ -17,9 +17,13 @@
     align-items: center;
     padding: 4px;
     background: var(--graphite);
-    border: 5px solid var(--thistle);
     border-radius: 80px;
     transition: transform 0.4s ease;
+    border: none;
+    box-shadow: 0 0 0 5px var(--thistle);
+    background-clip: border-box;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
 }
 
 .nav--collapsed {
@@ -72,6 +76,7 @@
 .nav-menu-wrap {
     display: grid;
     grid-template-columns: 1fr;
+    background: transparent;
     transition: grid-template-columns 0.35s ease 0.4s;
 }
 
@@ -84,7 +89,7 @@
     grid-template-columns: 1fr;
 }
 
-.nav-menu {
+.nav .nav-menu {
     min-width: 0;
     margin: 0;
     padding: 0;
@@ -103,24 +108,24 @@
 }
 
 /* Links and Log Out share one look */
-.nav-menu a,
-.nav-menu button {
+.nav .nav-menu a,
+.nav .nav-menu button {
     display: block;
     padding: 15px;
     font: inherit;
     color: white;
     text-decoration: none;
-    background: none;
+    background: transparent;
     border: none;
     border-radius: 80px;
     cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.nav-menu a:hover,
-.nav-menu a:focus-visible,
-.nav-menu button:hover,
-.nav-menu button:focus-visible {
+.nav .nav-menu a:hover,
+.nav .nav-menu a:focus-visible,
+.nav .nav-menu button:hover,
+.nav .nav-menu button:focus-visible {
     background-color: var(--tropical-teal);
     color: var(--graphite);
 }
@@ -132,4 +137,25 @@
     .nav-menu-wrap {
         transition: none;
     }
+}
+
+@media (max-width: 600px) {
+    .nav .nav-menu a,
+    .nav .nav-menu button {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+        .nav--collapsed .nav-toggle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .nav-toggle span {
+        width: 18px;
+        height: 18px;
+    }
+
+    .nav-toggle span:nth-child(1) { left: 6px; }
+    .nav-toggle span:nth-child(2) { left: 13px; }
+    .nav-toggle span:nth-child(3) { left: 20px; }
 }
