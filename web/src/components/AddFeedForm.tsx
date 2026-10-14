@@ -3,12 +3,14 @@ import { addFeed } from '../api/feeds';
 import { FormField } from './FormField'; // ← confirm path and named export
 import { ApiError } from '../models/errors';
 import type { Feed } from '../models/feedModel';
+import PlusIcon from '../assets/PlusIcon';
 
 interface AddFeedFormProps {
   onAdded: (feed: Feed) => void;
+  compact?: boolean;
 }
 
-export function AddFeedForm({ onAdded }: AddFeedFormProps) {
+export function AddFeedForm({ onAdded, compact = false}: AddFeedFormProps) {
   const [url, setUrl] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);
@@ -26,6 +28,32 @@ export function AddFeedForm({ onAdded }: AddFeedFormProps) {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (compact) {
+    return (
+      <form className="filter-search" onSubmit={handleSubmit}>
+        <input
+          autoFocus
+          className="filter-input"
+          type="url"
+          placeholder="https://example.com/rss.xml"
+          aria-label="Feed URL"
+          aria-invalid={!!error}
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="filter-search__submit"
+          aria-label="Add feed"
+          disabled={submitting || !url.trim()}
+        >
+          <PlusIcon />
+        </button>
+        {error && <p role="alert" className="filter-error">{error}</p>}
+      </form>
+    );
   }
 
   return (

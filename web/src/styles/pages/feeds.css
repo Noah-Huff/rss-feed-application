@@ -18,15 +18,15 @@
         background-color: var(--thistle);
     }
 
-    button {
+    li button {
         background-color: var(--sandy-brown);
     }
 
-    button:hover:not(:disabled) {
+    li button:hover:not(:disabled) {
         background: var(--peach-glow);
     }
 
-    button:disabled {
+    li button:disabled {
         opacity: 0.5;
         cursor: not-allowed;
     }

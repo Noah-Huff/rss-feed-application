@@ -18,6 +18,12 @@ export interface ItemsQuery {
   order: SortOrder;
 }
 
+export interface DiscoverFilters {
+    query?: string | undefined,
+    limit: number,
+    offset: number
+}
+
 export const addFeedBodySchema = {
   type: 'object',
   required: ['url'],

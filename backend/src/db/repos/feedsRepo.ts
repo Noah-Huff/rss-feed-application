@@ -1,6 +1,7 @@
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq, ilike, notExists, or, sql } from "drizzle-orm";
 import { db } from "../index.js";
 import { feedsTable, subscriptionsTable } from "../schema.js"
+import type { DiscoverFilters } from "../../schemas/feed.js";
 
 export type Feed = typeof feedsTable.$inferSelect;
 
@@ -77,4 +78,31 @@ export async function markFetched(feedId: string): Promise<void> {
         .update(feedsTable)
         .set({ lastFetchedAt: new Date() })
         .where(eq(feedsTable.id, feedId))
+}
+
+export async function listDiscoverableFeeds(userId: string, filters: DiscoverFilters): Promise<Feed[]> {
+    const conditions = [
+        notExists(
+            db.select({ one: sql`1` })
+                .from(subscriptionsTable)
+                .where(and(
+                    eq(subscriptionsTable.feedId, feedsTable.id),
+                    eq(subscriptionsTable.userId, userId),
+                )),
+        ),
+    ];
+    if (filters.query) {
+        const pattern = `%${filters.query}%`;
+        conditions.push(or(ilike(feedsTable.title, pattern), ilike(feedsTable.url, pattern))!);
+    }
+
+    const feeds = await db
+        .select()
+        .from(feedsTable)
+        .where(and(...conditions))
+        .orderBy(asc(feedsTable.title), asc(feedsTable.id))
+        .limit(filters.limit)
+        .offset(filters.offset);
+
+    return feeds;
 }
