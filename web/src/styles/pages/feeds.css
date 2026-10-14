@@ -17,8 +17,8 @@
         align-items: center;
         gap: var(--space-4);
         padding: var(--space-3) var(--space-4);
-        border: 5px solid;
-        border-radius: 80px;
+        border: var(--border-width) solid;
+        border-radius: var(--radius-lg);
         border-color: var(--graphite);
         margin-top: 5px;
         background-color: var(--thistle);
