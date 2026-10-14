@@ -6,12 +6,12 @@
     gap: 3vh;
     background-color: var(--thistle);
     padding: 20px 20px 20px 20px;
-    border-radius: 80px;
-    border: 10px solid;
+    border-radius: var(--radius-lg);
+    border: var(--border-width) solid;
     border-color: var(--graphite);
 
     img {
-        border-radius: 60px;
+        border-radius: var(--radius-lg);
         display: block;
         width: 100%;
         aspect-ratio: 16 / 9;

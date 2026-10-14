@@ -56,7 +56,10 @@ export default function FeedsPage() {
       <ul>
         {feeds.map((feed) => (
           <li key={feed.id}>
-            <Link to={`/feeds/${feed.id}`}>{feed.title}</Link>
+            <div>
+              <Link to={`/feeds/${feed.id}`}>{feed.title}</Link>
+              <div><small>{feed.url}</small></div>
+            </div>
             <button onClick={() => handleDelete(feed.id)}>Unsubscribe</button>
           </li>
         ))}

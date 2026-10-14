@@ -6,7 +6,7 @@ import type { Feed } from '../models/feedModel';
 import "../styles/pages/feeds.css";
 import { DiscoverControls } from '../components/DiscoverControl';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = Number(import.meta.env.VITE_FEED_PAGE_SIZE) || 20;
 
 function errorMessage(err: unknown): string {
     return err instanceof ApiError ? err.message : 'Something went wrong.';

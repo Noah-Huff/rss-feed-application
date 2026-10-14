@@ -6,8 +6,8 @@
     padding: clamp(1.5rem, 8vw, 100px);
     margin: 3rem auto;
 
-    border-radius: 80px;
-    border: 10px solid;
+    border-radius: var(--radius-lg);
+    border: var(--border-width) solid;
     border-color: var(--graphite);
 
     button {
