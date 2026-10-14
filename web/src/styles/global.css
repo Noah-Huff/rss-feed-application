@@ -15,6 +15,11 @@ main {
 h1 { font-size: var(--text-xl); }
 h2 { font-size: var(--text-lg); }
 
+@media (max-width: 600px) {
+    h1 { font-size: var(--text-lg); }
+    h2 { font-size: var(--text-base); }
+}
+
 a {
   color: var(--color-text);
   text-decoration-color: var(--sandy-brown);

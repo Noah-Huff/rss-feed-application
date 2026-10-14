@@ -3,7 +3,6 @@ import { Pagination } from '../components/Pagination';
 import { addFeed, discoverFeeds, type DiscoverFilters } from '../api/feeds';
 import { ApiError } from '../models/errors';
 import type { Feed } from '../models/feedModel';
-import "../styles/pages/dashboard.css";
 import "../styles/pages/feeds.css";
 import { DiscoverControls } from '../components/DiscoverControl';
 
@@ -82,48 +81,46 @@ export default function DiscoverPage() {
         }
     }
 
-    return <div className="discover dashboard">
-        <div className="feeds">
-            <h2>Enter a new feed, or see what others are reading!</h2>
-            <DiscoverControls
-                onSearch={(q) => {
-                    setActionError(null);
-                    setQuery(q);
-                    setPage(1);
-                }}
-                onAdded={() => setReloads((n) => n + 1)}
-            />
+    return <main className="feeds">
+        <h2>Enter a new feed, or see what others are reading!</h2>
+        <DiscoverControls
+            onSearch={(q) => {
+                setActionError(null);
+                setQuery(q);
+                setPage(1);
+            }}
+            onAdded={() => setReloads((n) => n + 1)}
+        />
 
-            {loading && <p>Loading...</p>}
-            {current?.error && <p role="alert">{current.error}</p>}
-            {actionError && <p role="alert">{actionError}</p>}
+        {loading && <p>Loading...</p>}
+        {current?.error && <p role="alert">{current.error}</p>}
+        {actionError && <p role="alert">{actionError}</p>}
 
-            {!loading && !current?.error && feeds.length === 0 && (
-                <p>{query ? 'No feeds match your search.' : 'No more feeds to discover.'}</p>
-            )}
+        {!loading && !current?.error && feeds.length === 0 && (
+            <p>{query ? 'No feeds match your search.' : 'No more feeds to discover.'}</p>
+        )}
 
-            <ul>
-                {feeds.map((feed) => (
-                    <li key={feed.id}>
+        <ul>
+            {feeds.map((feed) => (
+                <li key={feed.id}>
+                    <div>
+                        <span>{feed.title}</span>
                         <div>
-                            <span>{feed.title}</span>
-                            <div>
-                                <small>{feed.url}</small>
-                            </div>
+                            <small>{feed.url}</small>
                         </div>
-                        <button
-                            onClick={() => handleSubscribe(feed)}
-                            disabled={subscribingId === feed.id}
-                        >
-                            {subscribingId === feed.id ? 'Subscribing...' : 'Subscribe'}
-                        </button>
-                    </li>
-                ))}
-            </ul>
+                    </div>
+                    <button
+                        onClick={() => handleSubscribe(feed)}
+                        disabled={subscribingId === feed.id}
+                    >
+                        {subscribingId === feed.id ? 'Subscribing...' : 'Subscribe'}
+                    </button>
+                </li>
+            ))}
+        </ul>
 
-            {!current?.error && (feeds.length > 0 || page > 1) && (
-                <Pagination page={page} hasNext={current?.hasNext ?? false} disabled={loading} onChange={handlePageChange} />
-            )}
-        </div>
-    </div>
+        {!current?.error && (feeds.length > 0 || page > 1) && (
+            <Pagination page={page} hasNext={current?.hasNext ?? false} disabled={loading} onChange={handlePageChange} />
+        )}
+    </main>
 }

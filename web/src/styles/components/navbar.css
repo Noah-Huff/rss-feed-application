@@ -23,7 +23,7 @@
     box-shadow: 0 0 0 5px var(--thistle);
     background-clip: border-box;
     width: max-content;
-    max-width: calc(100vw - 2rem);
+    max-width: calc(100vw - 3rem);
 }
 
 .nav--collapsed {
@@ -142,8 +142,8 @@
 @media (max-width: 600px) {
     .nav .nav-menu a,
     .nav .nav-menu button {
-        padding: 10px 8px;
-        font-size: 0.85rem;
+        padding: 8px 6px;
+        font-size: 0.8rem;
     }
         .nav--collapsed .nav-toggle {
         width: 44px;
