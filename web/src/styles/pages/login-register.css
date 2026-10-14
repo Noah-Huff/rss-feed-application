@@ -1,7 +1,9 @@
 .login-register {
     width: fit-content;
+    max-width: calc(100vw - 2rem);
+    box-sizing: border-box;
     background-color: var(--thistle);
-    padding: 100px;
+    padding: clamp(1.5rem, 8vw, 100px);
     margin: 3rem auto;
 
     border-radius: 80px;
