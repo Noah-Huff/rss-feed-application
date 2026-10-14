@@ -7,6 +7,7 @@ import FeedsPage from './pages/FeedsPage'
 import FeedItemsPage from './pages/FeedItemsPage'
 import NavBar from './components/NavBar'
 import { useAuth } from './hooks/useAuth'
+import DiscoverPage from './pages/DiscoverPage'
 
 export default function App() {
   const { status } = useAuth()
@@ -31,6 +32,14 @@ export default function App() {
               <FeedsPage />
             </ProtectedRoute>
           } />
+        <Route
+          path="/discover"
+          element={
+            <ProtectedRoute>
+              <DiscoverPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/feeds/:id"
           element={

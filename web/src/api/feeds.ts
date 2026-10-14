@@ -18,6 +18,12 @@ export interface GetItemsParams {
   order?: SortOrder;
 }
 
+export interface DiscoverFilters {
+    query?: string | undefined,
+    limit: number,
+    offset: number
+}
+
 function toQueryString(params: GetItemsParams): string {
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
@@ -47,4 +53,8 @@ export function addFeed(url: string): Promise<Feed> {
 
 export function deleteFeed(id: string): Promise<void> {
   return request<void>(`/feeds/${id}`, { method: 'DELETE' });
+}
+
+export async function discoverFeeds(discoverFilters: DiscoverFilters): Promise<Feed[]> {
+  return await request<Feed[]>(`/feeds/discover${toQueryString(discoverFilters)}`);
 }

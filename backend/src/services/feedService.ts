@@ -1,5 +1,6 @@
 import { pruneItems, upsertItems } from "../db/repos/feedItemRepo.js";
-import { findFeedByUrl, insertFeed, listFeedsForUser, markFetched, subscribeToFeed, unsubscribeFromFeed, type Feed } from "../db/repos/feedsRepo.js";
+import { findFeedByUrl, insertFeed, listDiscoverableFeeds, listFeedsForUser, markFetched, subscribeToFeed, unsubscribeFromFeed, type Feed } from "../db/repos/feedsRepo.js";
+import type { DiscoverFilters } from "../schemas/feed.js";
 import type { FeedItem } from "../types/feed.js";
 import { fetchAndParseFeed } from "../utils/feedParser.js";
 import { normalizeUrl } from "../utils/feedUrl.js";
@@ -43,4 +44,8 @@ export async function addFeed(userId: string, rawUrl: string): Promise<Feed> {
 
     await subscribeToFeed(userId, feed.id);
     return feed;
+}
+
+export async function discoverFeeds(userId: string, discoverFilters: DiscoverFilters): Promise<Feed[]> {
+    return await listDiscoverableFeeds(userId, discoverFilters);
 }

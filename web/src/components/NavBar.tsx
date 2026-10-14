@@ -43,6 +43,7 @@ export default function NavBar() {
           <ul id="nav-menu" className="nav-menu">
             <li><Link to="/" onClick={close}>Home</Link></li>
             <li><Link to="/feeds" onClick={close}>My Feeds</Link></li>
+            <li><Link to="/discover" onClick={close}>Add Feed</Link></li>
             {status === 'authenticated' && (
               <li>
                 <button onClick={() => { close(); logout(); }}>Log Out</button>
